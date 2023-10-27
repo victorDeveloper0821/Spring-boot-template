@@ -9,6 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,7 +74,7 @@ public class SecurityConfig {
      * 弱掃過濾 設定
      *
      * @param http 前端資料
-     * @return
+     * @return SecurityFilterChain Filter chain
      * @throws Exception ERROR訊息
      */
     @Bean
@@ -81,7 +82,8 @@ public class SecurityConfig {
         http.cors(Customizer.withDefaults())
             .csrf(csrf -> csrf.disable())
             .exceptionHandling(Customizer.withDefaults())
-            .sessionManagement(Customizer.withDefaults()).authorizeHttpRequests((authorizeHttpRequests) -> {
+            .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests((authorizeHttpRequests) -> {
                 authorizeHttpRequests
                         .requestMatchers(whiteList)
                         .permitAll().anyRequest().authenticated();
