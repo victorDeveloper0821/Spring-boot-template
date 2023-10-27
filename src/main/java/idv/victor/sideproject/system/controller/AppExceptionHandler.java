@@ -3,6 +3,7 @@ package idv.victor.sideproject.system.controller;
 import idv.victor.sideproject.enums.ReturnCodes;
 import idv.victor.sideproject.exception.BusinessException;
 import idv.victor.sideproject.system.domain.response.ErrorResponse;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
@@ -106,5 +107,19 @@ public class AppExceptionHandler {
     public ErrorResponse httpRequestMethodNotSupportedExceptionType(HttpRequestMethodNotSupportedException e) {
         return new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase(), ReturnCodes.E0405.getStatusCode(),
                                  ReturnCodes.E0405.getStatusMsg());
+    }
+
+    /**
+     * 處理401
+     *
+     * @param e ExpiredJwtException
+     * @return response
+     */
+    @ExceptionHandler(ExpiredJwtException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponse httpUnAuthorizedException(ExpiredJwtException e) {
+        return new ErrorResponse(HttpStatus.UNAUTHORIZED.getReasonPhrase(), ReturnCodes.E0401.getStatusCode(),
+                                 ReturnCodes.E0401.getStatusMsg());
     }
 }
