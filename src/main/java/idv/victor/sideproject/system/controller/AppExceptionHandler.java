@@ -1,5 +1,6 @@
 package idv.victor.sideproject.system.controller;
 
+import idv.victor.sideproject.common.domain.response.CommonResponse;
 import idv.victor.sideproject.enums.ReturnCodes;
 import idv.victor.sideproject.exception.BusinessException;
 import idv.victor.sideproject.system.domain.response.ErrorResponse;
@@ -32,8 +33,8 @@ public class AppExceptionHandler {
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
     @ExceptionHandler(value = BusinessException.class)
-    public ErrorResponse catchBusinessException(BusinessException e) {
-        return new ErrorResponse(HttpStatus.OK.getReasonPhrase(), e.getErrCode(), e.getErrMsg());
+    public CommonResponse catchBusinessException(BusinessException e) {
+        return new CommonResponse(e.getErrCode(), e.getErrMsg());
     }
 
     /**
