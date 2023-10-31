@@ -6,6 +6,7 @@ import idv.victor.sideproject.member.service.MemberService;
 import idv.victor.sideproject.system.domain.MemberInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
  * @Date: 2023/10/30 - 下午 01:50
  * @Description: 描述
  **/
+@Service
 public class MemberServiceImpl implements MemberService {
     @Autowired
     private MemberReposiroty reposiroty;
@@ -30,6 +32,6 @@ public class MemberServiceImpl implements MemberService {
         Optional<Member> option = reposiroty.findByUserName(userName);
         if (option.isEmpty()) throw new UsernameNotFoundException("找不到 user");
         Member member = option.get();
-        return MemberInfo.builder().username(member.getUsername()).isAccountExpired(member.isAccountExpired()).build();
+        return MemberInfo.builder().username(member.getUserName()).isAccountExpired(member.isAccountExpired()).build();
     }
 }

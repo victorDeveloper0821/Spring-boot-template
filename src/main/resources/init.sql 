@@ -1,0 +1,14 @@
+-- Drop the table if it exists
+DROP TABLE IF EXISTS Member;
+
+-- Create the Member table
+CREATE TABLE Member (
+    UUID VARCHAR(255) PRIMARY KEY NOT NULL,
+    userName VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    cellPhone VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    isAccountExpired BOOLEAN NOT NULL,
+    isAccountLocked BOOLEAN NOT NULL,
+    isPasswordLocked BOOLEAN NOT NULL
+);
