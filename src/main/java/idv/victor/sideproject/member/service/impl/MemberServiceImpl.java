@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 /**
- * @version 1.0
- * @Author: Victor Tsai
- * @Date: 2023/10/30 - 下午 01:50
- * @Description: 描述
+ * 找尋 member 資料用
  **/
 @Service
 public class MemberServiceImpl implements MemberService {

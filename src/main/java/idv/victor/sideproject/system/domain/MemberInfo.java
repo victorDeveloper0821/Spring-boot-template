@@ -4,10 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
- * @version 1.0
- * @Author: Victor Tsai
- * @Date: 2023/10/26 - 下午 02:16
- * @Description: user相關資訊封裝
+ * user相關資訊封裝
  **/
 @Data
 @Builder

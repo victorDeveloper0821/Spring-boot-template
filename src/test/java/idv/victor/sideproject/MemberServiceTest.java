@@ -15,29 +15,44 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
+/**
+ * This class contains unit tests for the MemberService class.
+ */
 @SpringBootTest
 public class MemberServiceTest {
 
+    /**
+     * User查詢相關 service
+     */
     @Autowired
     private MemberService memberService;
 
+    /**
+     * Test case for finding a member by username.
+     */
     @Test
     void testFindMemberByUserName() {
+        // Prepare mock data
         String testUserName = "testUser";
         Member testMember = new Member();
         testMember.setUserName(testUserName);
         testMember.setAccountExpired(false);
 
+        // Mock the repository and define behavior
         MemberReposiroty mockRepository = mock(MemberReposiroty.class);
         when(mockRepository.findByUserName(testUserName)).thenReturn(Optional.of(testMember));
 
+        // Set the mock repository to the service using ReflectionTestUtils
         ReflectionTestUtils.setField(memberService, "reposiroty", mockRepository);
 
+        // Call the method to be tested
         MemberInfo result = memberService.findMemberByUserName(testUserName);
 
+        // Assert the result
         assertEquals(testUserName, result.getUsername());
         assertFalse(result.isAccountExpired());
 
+        // Verify that the repository method was called once with the expected argument
         verify(mockRepository, times(1)).findByUserName(testUserName);
     }
 }

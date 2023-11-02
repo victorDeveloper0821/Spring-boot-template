@@ -8,10 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
- * @version 1.0
- * @Author: Victor Tsai
- * @Date: 2023/10/26 - 下午 02:15
- * @Description: UserDetails
+ * Spring Security user 資訊
  **/
 @Data
 public class CustomUserDetails implements UserDetails {
