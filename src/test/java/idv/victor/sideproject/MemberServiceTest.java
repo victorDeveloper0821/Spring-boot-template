@@ -7,7 +7,7 @@ import idv.victor.sideproject.system.domain.MemberInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.Optional;
 
@@ -28,6 +28,12 @@ public class MemberServiceTest {
     private MemberService memberService;
 
     /**
+     * Mocked Repository
+     */
+    @MockBean
+    private MemberReposiroty mockRepository;
+
+    /**
      * Test case for finding a member by username.
      */
     @Test
@@ -38,12 +44,8 @@ public class MemberServiceTest {
         testMember.setUserName(testUserName);
         testMember.setAccountExpired(false);
 
-        // Mock the repository and define behavior
-        MemberReposiroty mockRepository = mock(MemberReposiroty.class);
+        // Mock a method return beans (可以是 Service 或是 Repository)
         when(mockRepository.findByUserName(testUserName)).thenReturn(Optional.of(testMember));
-
-        // Set the mock repository to the service using ReflectionTestUtils
-        ReflectionTestUtils.setField(memberService, "reposiroty", mockRepository);
 
         // Call the method to be tested
         MemberInfo result = memberService.findMemberByUserName(testUserName);
