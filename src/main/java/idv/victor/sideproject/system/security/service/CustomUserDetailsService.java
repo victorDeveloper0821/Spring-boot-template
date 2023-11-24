@@ -1,7 +1,9 @@
 package idv.victor.sideproject.system.security.service;
 
+import idv.victor.sideproject.enums.ReturnCodes;
 import idv.victor.sideproject.member.service.MemberService;
 import idv.victor.sideproject.system.domain.MemberInfo;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,11 +21,22 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Autowired
     private MemberService memberService;
 
+    /**
+     * 登入時查找使用者資訊
+     *
+     * @param username the username identifying the user whose data is required.
+     * @return 使用者資訊
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
         CustomUserDetails details = new CustomUserDetails();
         MemberInfo memberInfo = memberService.findMemberByUserName(username);
+        // 如果 memberInfo 為空，則拋出錯誤
+        if (ObjectUtils.isEmpty(memberInfo)) {
+            throw new UsernameNotFoundException(ReturnCodes.E0203.getStatusMsg());
+        }
         details.setMemberInfo(memberInfo);
         return details;
     }

@@ -5,7 +5,6 @@ import idv.victor.sideproject.member.repository.MemberReposiroty;
 import idv.victor.sideproject.member.service.MemberService;
 import idv.victor.sideproject.system.domain.MemberInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -27,7 +26,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberInfo findMemberByUserName(String userName) {
         Optional<Member> option = reposiroty.findByUserName(userName);
-        if (option.isEmpty()) throw new UsernameNotFoundException("找不到 user");
+        if (option.isEmpty()) {
+            return null;
+        }
         Member member = option.get();
         return MemberInfo.builder().username(member.getUserName()).isAccountExpired(member.isAccountExpired()).build();
     }

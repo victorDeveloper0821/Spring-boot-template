@@ -37,7 +37,12 @@ public enum ReturnCodes {
     /**
      * E05XX 系統內部錯誤
      */
-    E05XX("E05XX", "系統內部錯誤");
+    E05XX("E05XX", "系統內部錯誤"),
+
+    /**
+     * E0203 查無使用者
+     */
+    E0203("E0203", "查無使用者");
 
     private String statusCode;
 
