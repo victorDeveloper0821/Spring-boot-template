@@ -1,6 +1,7 @@
 package idv.victor.sideproject;
 
 import idv.victor.sideproject.member.service.MemberService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class UserDetailServiceTest {
      * 測試 Member 不存在時，是否拋出 exception
      */
     @Test
+    @DisplayName("測試 User 不存在的情況")
     public void testUserNotFound() {
         String userId = "testiing";
         // test userid with null results

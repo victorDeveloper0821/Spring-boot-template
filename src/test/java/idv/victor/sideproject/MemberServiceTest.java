@@ -4,6 +4,7 @@ import idv.victor.sideproject.member.domain.entity.Member;
 import idv.victor.sideproject.member.repository.MemberReposiroty;
 import idv.victor.sideproject.member.service.MemberService;
 import idv.victor.sideproject.system.domain.MemberInfo;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,6 +38,7 @@ public class MemberServiceTest {
      * Test case for finding a member by username.
      */
     @Test
+    @DisplayName("查詢 Member 功能")
     void testFindMemberByUserName() {
         // Prepare mock data
         String testUserName = "testUser";
