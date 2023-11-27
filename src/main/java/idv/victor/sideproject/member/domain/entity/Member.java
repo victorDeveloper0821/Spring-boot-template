@@ -26,7 +26,7 @@ public class Member {
     /**
      * 帳號
      */
-    //    @Column(name = "username")
+    @Column(name = "username")
     private String userName;
     /**
      * 密碼

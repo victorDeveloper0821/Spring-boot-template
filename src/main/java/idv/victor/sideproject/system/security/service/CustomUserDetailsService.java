@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      *
      * @param username the username identifying the user whose data is required.
      * @return 使用者資訊
-     * @throws UsernameNotFoundException
+     * @throws UsernameNotFoundException 找不到 User 資訊
      */
     @Override
     public UserDetails loadUserByUsername(String username)
