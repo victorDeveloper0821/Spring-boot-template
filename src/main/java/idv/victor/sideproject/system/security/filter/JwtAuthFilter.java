@@ -1,17 +1,11 @@
 package idv.victor.sideproject.system.security.filter;
 
-import idv.victor.sideproject.utils.JwtUtils;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 
@@ -20,19 +14,6 @@ import java.io.IOException;
  */
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
-
-    /**
-     * JWT 工具
-     */
-    @Autowired
-    private JwtUtils jwtUtils;
-
-    /**
-     * 用於拋出 exception 到 Error Handler
-     */
-    @Autowired
-    @Qualifier("handlerExceptionResolver")
-    private HandlerExceptionResolver resolver;
 
     /**
      * 執行 filter 相關邏輯
@@ -46,21 +27,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        try {
-            // TODO 新增部分 url 不需經過此 filter (optional)
-            // 解析 Authorization 跟 JWT
-            String authorization = request.getHeader("Authorization");
-            String jwtString = StringUtils.hasText(authorization) ? authorization.replace("Bearer ", "") : null;
-            if (!StringUtils.hasText(jwtString)) {
-                throw new IllegalArgumentException("JSON web token 不存在");
-            }
-            // TODO 新增 jwt 解析相關邏輯 - 取得 Authorization，並儲存 Authorization
-            Claims claims = jwtUtils.extractClaim(jwtString);
+        // TODO 新增部分 url 不需經過此 filter
+        // TODO 新增 jwt 基本檢核邏輯 - 檢核過期 or not
+        // TODO 新增 jwt 解析相關邏輯 - 取得 Authorization，並儲存 Authorization
 
-
-        } catch (Exception e) {
-            // 拋出 exception
-            resolver.resolveException(request, response, null, e);
-        }
     }
 }
