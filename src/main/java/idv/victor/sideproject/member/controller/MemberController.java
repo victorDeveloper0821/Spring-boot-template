@@ -50,7 +50,7 @@ public class MemberController {
      */
     @ResponseBody
     @PatchMapping(value = "/{userIdEncrypted}")
-    public CommonResponse UpdateUserInfo(@PathVariable String userIdEncrypted,
+    public CommonResponse updateUserInfo(@PathVariable String userIdEncrypted,
                                          @RequestBody RegisterReqDTO registerReqDTO) {
         return new CommonResponse("A0001", "作業成功", null);
     }
@@ -63,6 +63,17 @@ public class MemberController {
     @ResponseBody
     @GetMapping(value = "/{userIdEncrypted}")
     public CommonResponse showUserInfo(@PathVariable String userIdEncrypted) {
+        return new CommonResponse("A0001", "作業成功", null);
+    }
+
+    /**
+     * user 刪除
+     *
+     * @param userIdEncrypted 使用者ID加密
+     */
+    @ResponseBody
+    @DeleteMapping(value = "/{userIdEncrypted}")
+    public CommonResponse deleteUser(@PathVariable String userIdEncrypted) {
         return new CommonResponse("A0001", "作業成功", null);
     }
 }
