@@ -1,20 +1,17 @@
 package idv.victor.sideproject.member.controller;
 
+import idv.victor.sideproject.common.domain.response.CommonResponse;
 import idv.victor.sideproject.enums.AppConfig;
+import idv.victor.sideproject.member.domain.requst.LoginReqDTO;
+import idv.victor.sideproject.member.domain.requst.RegisterReqDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Objects;
-
 /**
  * @version 1.0
- * @Author: Victor Tsai
- * @Date: 2023/10/30 - 下午 01:43
- * @Description: 會員登入相關 controller
  **/
 @Tag(name = "會員相關 API ")
 @RestController
@@ -23,7 +20,7 @@ public class MemberController {
     /**
      * 使用者註冊接口
      *
-     * @param productCode 產品代碼
+     * @param registerReqDTO 會員註冊資料
      */
     @Operation(summary = "標題", description = "敘述")
     @ApiResponses({
@@ -31,9 +28,9 @@ public class MemberController {
             @ApiResponse(responseCode = "404", description = "找不到路徑")
     })
     @ResponseBody
-    @GetMapping(value = "/register")
-    public void userRegister(@PathVariable String productCode) {
-
+    @PostMapping(value = "/register")
+    public CommonResponse userRegister(@RequestBody RegisterReqDTO registerReqDTO) {
+        return new CommonResponse("A0001", "作業成功", null);
     }
 
     /**
@@ -41,19 +38,21 @@ public class MemberController {
      */
     @ResponseBody
     @PostMapping(value = "/login")
-    public void userLogin(HashMap<String, Objects> product) {
-
+    public CommonResponse userLogin(@RequestBody LoginReqDTO loginReqDTO) {
+        return new CommonResponse("A0001", "作業成功", null);
     }
 
     /**
      * 以 userIdEncrypted 更新使用者資訊
      *
      * @param userIdEncrypted 使用者ID加密
+     * @param registerReqDTO  更新使用者資訊
      */
     @ResponseBody
     @PatchMapping(value = "/{userIdEncrypted}")
-    public void UpdateUserInfo(@PathVariable String userIdEncrypted) {
-
+    public CommonResponse UpdateUserInfo(@PathVariable String userIdEncrypted,
+                                         @RequestBody RegisterReqDTO registerReqDTO) {
+        return new CommonResponse("A0001", "作業成功", null);
     }
 
     /**
@@ -63,7 +62,7 @@ public class MemberController {
      */
     @ResponseBody
     @GetMapping(value = "/{userIdEncrypted}")
-    public void showUserInfo(@PathVariable String userIdEncrypted) {
-
+    public CommonResponse showUserInfo(@PathVariable String userIdEncrypted) {
+        return new CommonResponse("A0001", "作業成功", null);
     }
 }
