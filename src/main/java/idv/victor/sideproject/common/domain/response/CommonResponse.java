@@ -32,4 +32,16 @@ public class CommonResponse {
         this.errMsg = errMsg;
 
     }
+
+    /**
+     * Constructor
+     *
+     * @param errCode 錯誤代碼
+     * @param errMsg  錯誤訊息
+     */
+    public CommonResponse(String errCode, String errMsg, Object data) {
+        this.errCode = errCode;
+        this.errMsg = errMsg;
+        this.data = data;
+    }
 }

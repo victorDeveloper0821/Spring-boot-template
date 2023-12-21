@@ -111,7 +111,7 @@ public class AppExceptionHandler {
     }
 
     /**
-     * 處理401
+     * 處理401 web Token 過期的狀況
      *
      * @param e ExpiredJwtException
      * @return response

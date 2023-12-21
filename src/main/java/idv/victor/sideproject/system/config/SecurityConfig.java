@@ -1,5 +1,6 @@
 package idv.victor.sideproject.system.config;
 
+import idv.victor.sideproject.system.security.filter.JwtAuthFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -9,16 +10,19 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * Spring Security 相關設定
  */
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     /**
@@ -26,6 +30,12 @@ public class SecurityConfig {
      */
     @Value("${path.whiteList}")
     private String[] whiteList;
+
+    /**
+     * JWT 認證用的 filter
+     */
+    @Autowired
+    private JwtAuthFilter jwtAuthFilter;
 
     /**
      * UserDetailService
@@ -79,18 +89,18 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors(Customizer.withDefaults())
-            .csrf(csrf -> csrf.disable())
-            .exceptionHandling(Customizer.withDefaults())
-            .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests((authorizeHttpRequests) -> {
-                authorizeHttpRequests
-                        .requestMatchers(whiteList)
-                        .permitAll().anyRequest().authenticated();
-            });
+        http
+                .csrf(csrf -> csrf.disable())
+                .exceptionHandling(Customizer.withDefaults())
+                .sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests((authorizeHttpRequests) -> {
+                    authorizeHttpRequests
+                            .requestMatchers(whiteList)
+                            .permitAll().anyRequest().permitAll();
+                });
 
-        http.authenticationProvider(authenticationProvider());
-
+        //        http.authenticationProvider(authenticationProvider());
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
