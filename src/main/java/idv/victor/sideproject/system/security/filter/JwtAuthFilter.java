@@ -8,12 +8,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * JWT 認證相關 filter
@@ -33,6 +36,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     @Autowired
     @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver resolver;
+
+    /**
+     * 定義特定 http request 的 url 不需要經過此 filter
+     *
+     * @param request current HTTP request
+     * @return boolean 是否不用經過 filter
+     * @throws ServletException request 錯誤
+     */
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        List<AntPathRequestMatcher> antPathRequestMatcherList = new ArrayList<>();
+        // swagger's path
+        antPathRequestMatcherList.add(new AntPathRequestMatcher("/swagger-ui.html"));
+        antPathRequestMatcherList.add(new AntPathRequestMatcher("/v3/**"));
+        antPathRequestMatcherList.add(new AntPathRequestMatcher("/swagger-ui/**"));
+        antPathRequestMatcherList.add(new AntPathRequestMatcher("/swagger-resources/**"));
+        antPathRequestMatcherList.add(new AntPathRequestMatcher("/webjars/**"));
+
+        return antPathRequestMatcherList.stream()
+                                        .anyMatch(antPathRequestMatcher -> antPathRequestMatcher.matches(request));
+    }
 
     /**
      * 執行 filter 相關邏輯
