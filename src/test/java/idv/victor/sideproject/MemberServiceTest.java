@@ -2,7 +2,7 @@ package idv.victor.sideproject;
 
 import idv.victor.sideproject.member.domain.entity.Member;
 import idv.victor.sideproject.member.repository.MemberReposiroty;
-import idv.victor.sideproject.member.service.MemberService;
+import idv.victor.sideproject.member.service.UserService;
 import idv.victor.sideproject.system.domain.MemberInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class MemberServiceTest {
      * User查詢相關 service
      */
     @Autowired
-    private MemberService memberService;
+    private UserService memberService;
 
     /**
      * Mocked Repository

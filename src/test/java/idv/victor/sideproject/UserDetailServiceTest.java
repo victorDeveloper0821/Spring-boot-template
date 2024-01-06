@@ -1,6 +1,6 @@
 package idv.victor.sideproject;
 
-import idv.victor.sideproject.member.service.MemberService;
+import idv.victor.sideproject.member.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -28,7 +28,7 @@ public class UserDetailServiceTest {
      * Mocked memberService
      */
     @MockBean
-    private MemberService memberService;
+    private UserService memberService;
 
     /**
      * 測試 Member 不存在時，是否拋出 exception
