@@ -71,7 +71,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            // TODO 新增部分 url 不需經過此 filter (optional)
             // 解析 Authorization 跟 JWT
             String authorization = request.getHeader("Authorization");
             String jwtString = StringUtils.hasText(authorization) ? authorization.replace("Bearer ", "") : null;

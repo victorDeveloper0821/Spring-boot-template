@@ -1,8 +1,10 @@
 package idv.victor.sideproject.system.config;
 
 import idv.victor.sideproject.system.security.filter.JwtAuthFilter;
+import idv.victor.sideproject.system.security.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,9 +14,12 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -41,21 +46,61 @@ public class SecurityConfig {
      * UserDetailService
      */
     @Autowired
-    private UserDetailsService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
 
     /**
-     * AuthenticationProvider
+     * AuthenticationProvider - With Authentication from databases
      *
      * @return DaoAuthenticationProvider
      */
     @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
+    @ConditionalOnProperty(prefix = "template", name = "auth", havingValue = "datasource")
+    public DaoAuthenticationProvider authenticationDataSourceProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
+    }
+
+    /**
+     * AuthenticationProvider - InMemoryUserAuthentication
+     *
+     * @return DaoAuthenticationProvider
+     */
+    @Bean
+    @ConditionalOnProperty(prefix = "template", name = "auth", havingValue = "InMemory", matchIfMissing = true)
+    public DaoAuthenticationProvider authenticationInMemoryProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+        authProvider.setUserDetailsService(InMemoryUserDetails());
+        //authProvider.setPasswordEncoder(passwordEncoder());
+
+        return authProvider;
+    }
+
+    /**
+     * InMemory UserDetails here
+     *
+     * @return UserDetailsService
+     */
+    @Bean
+    @ConditionalOnProperty(prefix = "template", name = "auth", havingValue = "InMemory", matchIfMissing = true)
+    public UserDetailsService InMemoryUserDetails() {
+        // The builder will ensure the passwords are encoded before saving in memory
+        User.UserBuilder users = User.withDefaultPasswordEncoder();
+        UserDetails user = users
+                .username("user")
+                .password("password")
+                .roles("USER")
+                .build();
+        UserDetails admin = users
+                .username("admin")
+                .password("password")
+                .roles("USER", "ADMIN")
+                .build();
+        return new InMemoryUserDetailsManager(user, admin);
     }
 
     /**
