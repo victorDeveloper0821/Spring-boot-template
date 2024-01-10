@@ -1,6 +1,10 @@
 package idv.victor.sideproject.member.service;
 
 import idv.victor.sideproject.system.domain.MemberInfo;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 /**
  * 使用者相關服務
@@ -17,10 +21,10 @@ public interface UserService {
     /**
      * 當使用者登入成功時會做的事情
      */
-    void onLoginFailed();
+    void onLoginFailed(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
     /**
      * 當使用者登入失敗時會做的事情
      */
-    void onLoginSuccessed();
+    void onLoginSuccessed(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

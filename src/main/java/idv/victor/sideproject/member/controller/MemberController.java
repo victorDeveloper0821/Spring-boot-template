@@ -37,7 +37,7 @@ public class MemberController {
      * 使用者登入接口
      */
     @ResponseBody
-    @PostMapping(value = "/login")
+    @PostMapping(value = "/login", produces = "application/json; charset=utf-8")
     public CommonResponse userLogin(@RequestBody LoginReqDTO loginReqDTO) {
         return new CommonResponse("A0001", "作業成功", null);
     }

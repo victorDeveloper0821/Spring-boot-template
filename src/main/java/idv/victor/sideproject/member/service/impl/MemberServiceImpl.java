@@ -1,12 +1,23 @@
 package idv.victor.sideproject.member.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import idv.victor.sideproject.common.domain.response.CommonResponse;
+import idv.victor.sideproject.enums.ReturnCodes;
 import idv.victor.sideproject.member.domain.entity.Member;
+import idv.victor.sideproject.member.domain.requst.LoginReqDTO;
 import idv.victor.sideproject.member.repository.MemberReposiroty;
 import idv.victor.sideproject.member.service.UserService;
 import idv.victor.sideproject.system.domain.MemberInfo;
+import idv.victor.sideproject.utils.JwtUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -19,6 +30,12 @@ public class MemberServiceImpl implements UserService {
      */
     @Autowired
     private MemberReposiroty reposiroty;
+
+    /**
+     * JWT 工具類
+     */
+    @Autowired
+    private JwtUtils jwtUtils;
 
     /**
      * 以 userName 尋找 member
@@ -37,18 +54,50 @@ public class MemberServiceImpl implements UserService {
     }
 
     /**
-     * 當使用者(Member權限)登入成功時會做的事情
+     * 當使用者(Member權限)登入失敗時會做的事情
+     *
+     * @param request  http 請求
+     * @param response http 回應
+     * @throws IOException 讀取請求錯誤
      */
     @Override
-    public void onLoginFailed() {
-
+    public void onLoginFailed(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Object Mapper 序列化 json
+        ObjectMapper om = new ObjectMapper();
+        CommonResponse commonResponse =
+                new CommonResponse(ReturnCodes.AE0001.getStatusCode(), ReturnCodes.AE0001.getStatusMsg(), null);
+        response.setContentType("application/json; charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setCharacterEncoding("UTF-8");
+        // response 給 json
+        PrintWriter writer = response.getWriter();
+        String json = om.writeValueAsString(commonResponse);
+        writer.println(json);
     }
 
     /**
-     * 當使用者(Member權限)登入失敗時會做的事情
+     * 當使用者(Member權限)登入成功時會做的事情
+     *
+     * @param request  http 請求
+     * @param response http 回應
+     * @throws IOException 讀取請求錯誤
      */
     @Override
-    public void onLoginSuccessed() {
+    public void onLoginSuccessed(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ObjectMapper om = new ObjectMapper();
+        String loginReqDTOStr = IOUtils.toString(request.getReader());
 
+        LoginReqDTO reqDTO = om.readValue(loginReqDTOStr, LoginReqDTO.class);
+
+        Map map = Map.of("token", jwtUtils.generateToken(reqDTO.getUsername(), "Member", 5));
+        CommonResponse commonResponse =
+                new CommonResponse(ReturnCodes.AE0000.getStatusCode(), ReturnCodes.AE0000.getStatusMsg(), map);
+        response.setContentType("application/json; charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setCharacterEncoding("UTF-8");
+        // response 給 json
+        PrintWriter writer = response.getWriter();
+        String json = om.writeValueAsString(commonResponse);
+        writer.println(json);
     }
 }

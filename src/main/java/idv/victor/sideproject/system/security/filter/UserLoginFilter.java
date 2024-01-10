@@ -1,10 +1,16 @@
 package idv.victor.sideproject.system.security.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import idv.victor.sideproject.member.domain.requst.LoginReqDTO;
+import idv.victor.sideproject.member.service.UserService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
@@ -16,6 +22,11 @@ import java.io.IOException;
  */
 public class UserLoginFilter extends AbstractAuthenticationProcessingFilter {
 
+    /**
+     * UserService (已會員為範例)
+     */
+    @Autowired
+    private UserService userService;
 
     /**
      * User Login Filter
@@ -23,8 +34,8 @@ public class UserLoginFilter extends AbstractAuthenticationProcessingFilter {
      * @param defaultFilterProcessesUrl url matcher
      * @param authenticationManager     authenticationManager
      */
-    protected UserLoginFilter(String defaultFilterProcessesUrl,
-                              AuthenticationManager authenticationManager) {
+    public UserLoginFilter(String defaultFilterProcessesUrl,
+                           AuthenticationManager authenticationManager) {
         super(defaultFilterProcessesUrl);
         setAuthenticationManager(authenticationManager);
     }
@@ -45,9 +56,14 @@ public class UserLoginFilter extends AbstractAuthenticationProcessingFilter {
             throws AuthenticationException, IOException, ServletException {
         // todo check 是否有登入前置作業 (optional)
 
-        // todo 取得及解析 requst body 組成 AuthenticationToken 到 provider
-
-        return null;
+        // get json request body
+        String jsonBody = IOUtils.toString(request.getReader());
+        ObjectMapper om = new ObjectMapper();
+        LoginReqDTO loginReqDTO = om.readValue(jsonBody, LoginReqDTO.class);
+        // 由 authenticationManager 進行驗證
+        return getAuthenticationManager().authenticate(
+                new UsernamePasswordAuthenticationToken(loginReqDTO.getUsername(), loginReqDTO.getPassword())
+        );
     }
 
     /**
@@ -64,8 +80,7 @@ public class UserLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-        // todo User登入成功時的 action
-        super.successfulAuthentication(request, response, chain, authResult);
+        userService.onLoginSuccessed(request, response);
     }
 
     /**
@@ -80,7 +95,6 @@ public class UserLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                               AuthenticationException failed) throws IOException, ServletException {
-        // todo User登入失敗時的 action
-        super.unsuccessfulAuthentication(request, response, failed);
+        userService.onLoginFailed(request, response);
     }
 }
