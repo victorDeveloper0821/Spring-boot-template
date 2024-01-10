@@ -1,19 +1,15 @@
-# Spring boot Skelton project
+# Spring Boot Skeleton Project Manual
 
----
-the project is based on spring boot version 3
+## Project Overview
+
+The Spring Boot Skeleton Project is based on Spring Boot version 3.
 
 ## Restful Endpoints
 
----
-Spring-web-starter: use `@Controller` or `@ControllerAdvice` as url endpoints and Error handler aspectively.
+To define RESTful endpoints, utilize the `spring-web-starter`. You can create endpoints using `@Controller` or `@ControllerAdvice` for handling specific URLs and implementing error handlers, respectively.
 
 ## Spring Security
-
----
-User Authentication
+For user authentication, Spring Security is integrated into the project.
 
 ## Springdoc Swagger
-
----
-Online openAPI document
+Springdoc Swagger is integrated to provide an online OpenAPI documentation for your API.
