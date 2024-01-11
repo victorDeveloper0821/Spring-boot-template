@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @version 1.0
  **/
-@Tag(name = "會員相關 API ")
+@Tag(name = "一般會員操作相關 API ")
 @RestController
 @RequestMapping(value = AppConfig.ApiPrefix + "member")
 public class MemberController {
@@ -22,7 +22,7 @@ public class MemberController {
      *
      * @param registerReqDTO 會員註冊資料
      */
-    @Operation(summary = "標題", description = "敘述")
+    @Operation(summary = "一般使用者註冊", description = "一般使用者註冊端點")
     @ApiResponses({
             @ApiResponse(responseCode = "401", description = "沒有權限"),
             @ApiResponse(responseCode = "404", description = "找不到路徑")
@@ -36,8 +36,14 @@ public class MemberController {
     /**
      * 使用者登入接口
      */
+    @Operation(summary = "一般使用者登入", description = "提供一般使用者登入的 API 端點")
+    @ApiResponses({
+            @ApiResponse(responseCode = "401", description = "登入認證失敗"),
+            @ApiResponse(responseCode = "200", description = "使用者登入成功"),
+            @ApiResponse(responseCode = "404", description = "找不到路徑")
+    })
     @ResponseBody
-    @PostMapping(value = "/login", produces = "application/json; charset=utf-8")
+    @PostMapping(value = "/login")
     public CommonResponse userLogin(@RequestBody LoginReqDTO loginReqDTO) {
         return new CommonResponse("A0001", "作業成功", null);
     }

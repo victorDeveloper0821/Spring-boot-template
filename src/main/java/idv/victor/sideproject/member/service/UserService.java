@@ -3,6 +3,7 @@ package idv.victor.sideproject.member.service;
 import idv.victor.sideproject.system.domain.MemberInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
 
 import java.io.IOException;
 
@@ -19,12 +20,18 @@ public interface UserService {
     MemberInfo findMemberByUserName(String userName);
 
     /**
-     * 當使用者登入成功時會做的事情
+     * 當使用者登入失敗時會做的事情
+     *
+     * @param request  http 請求
+     * @param response http 回應
      */
     void onLoginFailed(HttpServletRequest request, HttpServletResponse response) throws IOException;
 
     /**
-     * 當使用者登入失敗時會做的事情
+     * 當使用者登入成功時會做的事情
+     *
+     * @param response       http 回應
+     * @param authentication 驗證成功 Authentication
      */
-    void onLoginSuccessed(HttpServletRequest request, HttpServletResponse response) throws IOException;
+    void onLoginSuccessed(HttpServletResponse response, Authentication authentication) throws IOException;
 }

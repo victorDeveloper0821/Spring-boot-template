@@ -80,7 +80,7 @@ public class UserLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException, ServletException {
-        userService.onLoginSuccessed(request, response);
+        userService.onLoginSuccessed(response, authResult);
     }
 
     /**
