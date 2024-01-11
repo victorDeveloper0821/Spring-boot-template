@@ -1,8 +1,11 @@
 package idv.victor.sideproject.common.domain.response;
 
+import lombok.Getter;
+
 /**
  * 通用的 response 格式
  */
+@Getter
 public class CommonResponse {
     /**
      * 錯誤代碼

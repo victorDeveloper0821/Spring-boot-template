@@ -1,5 +1,6 @@
 package idv.victor.sideproject.system.security.filter;
 
+import idv.victor.sideproject.enums.AppConfig;
 import idv.victor.sideproject.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -53,6 +54,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         antPathRequestMatcherList.add(new AntPathRequestMatcher("/swagger-ui/**"));
         antPathRequestMatcherList.add(new AntPathRequestMatcher("/swagger-resources/**"));
         antPathRequestMatcherList.add(new AntPathRequestMatcher("/webjars/**"));
+        antPathRequestMatcherList.add(new AntPathRequestMatcher(AppConfig.ApiPrefix + "member" + "/login"));
 
         return antPathRequestMatcherList.stream()
                                         .anyMatch(antPathRequestMatcher -> antPathRequestMatcher.matches(request));
@@ -71,7 +73,6 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            // TODO 新增部分 url 不需經過此 filter (optional)
             // 解析 Authorization 跟 JWT
             String authorization = request.getHeader("Authorization");
             String jwtString = StringUtils.hasText(authorization) ? authorization.replace("Bearer ", "") : null;

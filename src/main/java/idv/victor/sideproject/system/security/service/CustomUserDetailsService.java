@@ -1,7 +1,7 @@
 package idv.victor.sideproject.system.security.service;
 
 import idv.victor.sideproject.enums.ReturnCodes;
-import idv.victor.sideproject.member.service.MemberService;
+import idv.victor.sideproject.member.service.UserService;
 import idv.victor.sideproject.system.domain.MemberInfo;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class CustomUserDetailsService implements UserDetailsService {
      * MemberService 會員服務
      */
     @Autowired
-    private MemberService memberService;
+    private UserService memberService;
 
     /**
      * 登入時查找使用者資訊
