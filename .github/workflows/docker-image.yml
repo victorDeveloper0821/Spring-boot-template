@@ -18,7 +18,7 @@ jobs:
       with: 
         DOCKER_USER: ${{secrets.DOCKER_USER}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-    - name: build docker image
-      run: docker build . --file Dockerfile --tag victorTsai8001/spring-api-template:$(date +%s)
-    - name: docker push
-      run: docker push ${{secrets.DOCKER_USER}}/spring-api-template
+    - uses: docker/build-push-action@v5
+      with:
+        push: true
+        tags: victorTsai8001/spring-api-template:$(date +%s)
