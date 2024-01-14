@@ -5,7 +5,7 @@ COPY . .
 RUN gradle clean build --no-daemon
 
 # Final Stage
-FROM adoptopenjdk:17-jre-hotspot
+FROM openjdk:17-jdk-slim
 WORKDIR /app
 EXPOSE 8088
 COPY --from=build /app/build/libs/*.jar ./app.jar
