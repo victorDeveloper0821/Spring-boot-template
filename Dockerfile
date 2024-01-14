@@ -2,7 +2,7 @@
 FROM gradle:7.3.3-jdk17 AS build
 WORKDIR /app
 COPY . .
-RUN ./gradlew clean build --no-daemon
+RUN chmod u+x ./gradlew && ./gradlew clean build --no-daemon
 
 # Final Stage
 FROM openjdk:17-jdk-slim
