@@ -19,6 +19,7 @@ jobs:
         DOCKER_USER: ${{secrets.DOCKER_USER}}
         DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     - uses: docker/build-push-action@v5
+    - name: buildAndPush 
       with:
         push: true
         tags: victorTsai8001/spring-api-template:$(date +%s)
