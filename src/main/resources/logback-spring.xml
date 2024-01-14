@@ -1,6 +1,6 @@
 <configuration>
     <springProfile name="local">
-        <property name="LOG_PATH" value="${PRE_LOG_DIR}/logs"/>
+        <property name="LOG_PATH" value="${AppLogDir}/logs"/>
     </springProfile>
 
     <springProfile name="dev">
