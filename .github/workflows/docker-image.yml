@@ -26,4 +26,4 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: victorTsai8001/spring-api-template:latest
+          tags: victortsai8001/spring-api-template:latest
