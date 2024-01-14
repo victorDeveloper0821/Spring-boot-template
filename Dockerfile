@@ -10,4 +10,4 @@ WORKDIR /app
 EXPOSE 8088
 COPY --from=build /app/build/libs/*.jar ./app.jar
 
-CMD ["java", "-jar", "-Dspring.profiles.active=local", "-DAppLogDir=/opt/log", "./app.jar"]
+CMD ["java", "-jar", "-DAppLogDir=/opt/log", "./app.jar"]
