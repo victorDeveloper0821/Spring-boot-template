@@ -15,11 +15,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: login to Dockerhub
-#      env: 
-#        DOCKER_USER: ${{secrets.DOCKER_USER}}
-#        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      run:
-        echo ${{secrets.DOCKER_USER}} | docker login -u ${{secrets.DOCKER_PASSWORD}} --password-stdin
+      with: 
+        DOCKER_USER: ${{secrets.DOCKER_USER}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
     - name: build docker image
       run: docker build . --file Dockerfile --tag victorTsai8001/spring-api-template:$(date +%s)
     - name: docker push
