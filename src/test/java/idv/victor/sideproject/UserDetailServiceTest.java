@@ -22,7 +22,7 @@ public class UserDetailServiceTest {
      * UserDetailsService
      */
     @Autowired
-    private UserDetailsService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
 
     /**
      * Mocked memberService
