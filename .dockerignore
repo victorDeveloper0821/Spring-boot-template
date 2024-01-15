@@ -1,0 +1,16 @@
+# version control
+.git/
+.github/
+.gitignore
+
+# Intellij IDEA
+.idea/
+*.md
+
+# used for windows cmd
+gradlew.bat
+.gradle
+
+# Java Project
+build/
+
