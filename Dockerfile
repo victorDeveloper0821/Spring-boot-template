@@ -18,13 +18,13 @@ COPY . .
 RUN chmod u+x ./gradlew && ./gradlew clean build --no-daemon
 
 # Final Stage
-FROM alpine:3.19.0
+FROM ubuntu:20.04
 ## copy files from build images with jre
 COPY --from=build /opt/custom-jre /opt/java
-ENV JAVA_HOME=/opt/java
-ENV PATH="$PATH:$JAVA_HOME/bin"
+ENV JAVA_HOME /opt/java
+ENV PATH "$PATH:$JAVA_HOME/bin"
 # create non-root user and switch to non-root user
-RUN adduser -D app
+#RUN adduser -D app
 USER app
 ## execute java jar here
 WORKDIR /app
