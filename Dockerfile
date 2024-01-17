@@ -24,7 +24,7 @@ COPY --from=build /opt/custom-jre /opt/java
 ENV JAVA_HOME /opt/java
 ENV PATH "$PATH:$JAVA_HOME/bin"
 # create non-root user and switch to non-root user
-#RUN adduser -D app
+RUN useradd -ms /bin/bash app
 USER app
 ## execute java jar here
 WORKDIR /app
