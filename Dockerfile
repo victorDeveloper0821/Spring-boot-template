@@ -15,7 +15,7 @@ RUN jlink \
 
 WORKDIR /app
 COPY . .
-RUN chmod u+x ./gradlew && ./gradlew clean build --no-daemon
+RUN chmod u+x ./gradlew && ./gradlew clean bootJar --no-daemon
 
 # Final Stage
 FROM ubuntu:20.04
