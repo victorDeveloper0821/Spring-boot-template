@@ -23,11 +23,20 @@ FROM ubuntu:20.04
 COPY --from=build /opt/custom-jre /opt/java
 ENV JAVA_HOME /opt/java
 ENV PATH "$PATH:$JAVA_HOME/bin"
+
+## java runtime env
+ENV API_ENV local
+
+## expose 8088 port
+EXPOSE 8088
+
 # create non-root user and switch to non-root user
 RUN useradd -ms /bin/bash app
 USER app
-## execute java jar here
+
+## copy jar from build stage
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar ./app.jar
-EXPOSE 8088
+
+## execute java jar here
 CMD ["java", "-jar", "-DAppLogDir=/opt/log", "./app.jar"]
