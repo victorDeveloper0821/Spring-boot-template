@@ -1,9 +1,10 @@
 package idv.victor.sideproject.member.domain.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.time.LocalDate;
+import java.util.HashSet;
 
 /**
  * Member 資訊
@@ -58,4 +59,21 @@ public class Member {
      */
     @Column(name = "isPasswordLocked")
     private boolean isPasswordLocked;
+    /**
+     * 建立日期
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDate createdAt;
+
+    /**
+     * 過期時間
+     */
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDate updatedAt;
+
+    /**
+     * 密碼檔
+     */
+    @OneToMany(mappedBy = "member")
+    private HashSet<PasswordProfile> passwordProfiles = new HashSet<>();
 }
